@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế hoạch Tái cấu trúc E-commerce MYLAN Q4/2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mylan-purple': '#5E3C98',
+                        'mylan-light': '#F3F0F9',
+                    },
+                },
+                fontFamily: {
+                    sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                },
+            },
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Corporate (Background: #F8F9FA, Text: #212529, Primary: #5E3C98 [Mylan Purple], Accent: #6C757D, Success: #198754, Warning: #DC3545) -->
+    <!-- Application Structure Plan: Bố cục được thiết kế theo 4 phần chủ đề chính thay vì theo cấu trúc tuyến tính của báo cáo gốc: (1) Tổng quan, (2) Giải pháp & Kế hoạch, (3) Đội ngũ, (4) KPI & Rủi ro. Cấu trúc này giúp người xem (Ban Giám đốc) nhanh chóng nắm bắt các khía cạnh quan trọng nhất của đề xuất. Thanh điều hướng cố định cho phép di chuyển dễ dàng giữa các phần. Các yếu tố tương tác như biểu đồ động, timeline có thể nhấp chuột, và sơ đồ tổ chức chi tiết khi chọn giúp thông tin phức tạp trở nên dễ tiêu hóa và hấp dẫn hơn, hỗ trợ việc ra quyết định nhanh chóng. -->
+    <!-- Visualization & Content Choices: 
+        - GMV Suy giảm: Báo cáo -> So sánh hiệu suất -> Biểu đồ đường (Line Chart) -> Tương tác khi di chuột -> Chart.js. Biểu đồ đường trực quan hóa sự sụt giảm nghiêm trọng, tạo tác động mạnh mẽ ngay từ đầu.
+        - Kế hoạch 12 Tuần: Báo cáo -> Trình bày quy trình -> Timeline tương tác (Tabs) -> Nhấp chuột để xem chi tiết -> HTML/CSS/JS. Thay thế bảng dữ liệu dày đặc bằng một timeline tương tác, giúp người xem theo dõi kế hoạch theo từng giai đoạn một cách tuần tự và rõ ràng.
+        - Cơ cấu tổ chức mới: Báo cáo -> Sắp xếp hệ thống -> Sơ đồ tổ chức (Flexbox) -> Nhấp chuột để xem nhiệm vụ -> HTML/CSS/JS. Trình bày cấu trúc nhân sự mới một cách trực quan, cho phép xem chi tiết nhiệm vụ của từng vị trí mà không làm rối giao diện chính.
+        - KPI kỳ vọng: Báo cáo -> Thông báo mục tiêu -> Biểu đồ cột (Bar Chart) & Đồng hồ (Doughnut Chart) -> Tương tác khi di chuột -> Chart.js. Trực quan hóa các chỉ số mục tiêu giúp chúng trở nên dễ nhớ và so sánh hơn so với một bảng số liệu tĩnh.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F8F9FA;
+            color: #212529;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #5E3C98; /* Mylan Purple */
+            border-bottom-color: #5E3C98; /* Mylan Purple */
+        }
+        .phase-tab.active {
+            background-color: #5E3C98; /* Mylan Purple */
+            color: white;
+        }
+        .phase-tab {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-platform.active {
+            color: #5E3C98;
+            border-color: #5E3C98;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo MyLan và biểu tượng bướm -->
+            <h1 class="text-xl md:text-2xl font-bold text-mylan-purple flex items-center space-x-2">
+                <span class="text-3xl">MyLan</span> 
+                <span class="text-white bg-mylan-purple rounded-full p-1 text-xs">🦋</span>
+                <span class="font-normal text-gray-700 text-sm hidden sm:inline">E-COMMERCE</span>
+            </h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="nav-link font-medium pb-1">Tổng quan</a>
+                <a href="#plan" class="nav-link font-medium pb-1">Kế hoạch</a>
+                <a href="#team" class="nav-link font-medium pb-1">Đội ngũ</a>
+                <a href="#kpi" class="nav-link font-medium pb-1">KPI & Rủi ro</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+             <a href="#overview" class="block py-2 px-6 text-center nav-link">Tổng quan</a>
+             <a href="#plan" class="block py-2 px-6 text-center nav-link">Kế hoạch</a>
+             <a href="#team" class="block py-2 px-6 text-center nav-link">Đội ngũ</a>
+             <a href="#kpi" class="block py-2 px-6 text-center nav-link">KPI & Rủi ro</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="overview" class="mb-20">
+            <h2 class="text-4xl font-bold text-center mb-4">Đề xuất Tái cấu trúc Khối E-commerce</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Phân tích hiện trạng yếu kém, các vấn đề nội tại và đề xuất mục tiêu chiến lược cho Quý 4/2025 để vực dậy hoạt động kinh doanh trên sàn thương mại điện tử.</p>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-[#DC3545]">Thực trạng Báo động</h3>
+                    <p class="mb-6 text-gray-700">Hoạt động E-commerce đang đối mặt với nhiều vấn đề nghiêm trọng từ cấu trúc nhân sự, quy trình vận hành đến hiệu quả kinh doanh, dẫn đến sự sụt giảm doanh thu và ảnh hưởng uy tín thương hiệu.</p>
+                     <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg">Vấn đề Tổ chức & Nhân sự</h4>
+                            <p class="text-sm text-gray-600">Cấu trúc không rõ ràng, vai trò chồng chéo, thiếu các bộ phận chuyên trách và nhiều đầu việc quan trọng bị bỏ trống.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg">Vấn đề Vận hành Sàn</h4>
+                            <p class="text-sm text-gray-600">Các gian hàng hoạt động kém hiệu quả, bị khóa, hoặc bỏ trống. Thiếu chiến dịch quảng cáo và khuyến mãi hấp dẫn.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-lg">Vấn đề Nội tại</h4>
+                            <p class="text-sm text-gray-600">Thiếu SOP, không có dashboard theo dõi, CSKH yếu kém, visual không đồng bộ và tỷ lệ sai sót đơn hàng cao.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-2">GMV (Shopee) Sụt giảm Liên tục</h3>
+                    <p class="text-center text-sm text-gray-500 mb-4">(3 tháng gần nhất)</p>
+                    <div class="chart-container">
+                        <canvas id="gmvChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- START: Detailed Platform Status -->
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold mb-6 text-mylan-purple text-center">Phân tích Chi tiết Hiệu suất Sàn</h3>
+
+                <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-center mb-6 border-b border-gray-200">
+                        <!-- Đã chuyển TikTok Shop lên trước và active -->
+                        <button id="tab-tiktok" class="tab-platform active text-mylan-purple font-semibold px-4 py-2 border-b-2 border-mylan-purple transition-all">TikTok Shop (Ưu tiên Khôi phục)</button>
+                        <button id="tab-shopee" class="tab-platform text-gray-500 font-semibold px-4 py-2 border-b-2 border-transparent hover:border-gray-300 transition-all">Shopee (MYLAN PAPER)</button>
+                    </div>
+
+                    <!-- Đã thay đổi thứ tự nội dung và ẩn/hiện ban đầu -->
+                    <div id="content-tiktok" class="platform-content">
+                        <!-- TikTok Content (Populated by JS) -->
+                    </div>
+                    
+                    <div id="content-shopee" class="platform-content hidden">
+                        <!-- Shopee Content (Populated by JS) -->
+                    </div>
+                </div>
+            </div>
+            <!-- END: Detailed Platform Status -->
+
+            <div class="mt-20">
+                 <h3 class="text-3xl font-bold mb-8 text-center text-[#198754]">Mục tiêu Tái cấu trúc Q4/2025</h3>
+                 <div class="grid md:grid-cols-3 gap-8 text-center">
+                     <!-- Đã thay đổi border-t-4 border-[#0D6EFD] thành border-t-4 border-mylan-purple -->
+                     <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-mylan-purple">
+                         <h4 class="text-xl font-bold mb-2">Cấp bách</h4>
+                         <p class="text-gray-600">Xây dựng lại cơ cấu tổ chức, tuyển dụng & đào tạo đội ngũ, thiết lập hệ thống quy trình - KPI - Dashboard chuẩn hóa.</p>
+                     </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-mylan-purple">
+                         <h4 class="text-xl font-bold mb-2">Vận hành</h4>
+                         <p class="text-gray-600">Đảm bảo các chỉ số vận hành đạt chuẩn (FHR ≥ 90%, CS Response ≥ 90%, Tỷ lệ hủy ≤ 5%). Chuẩn hóa hình ảnh và nội dung SKU.</p>
+                     </div>
+                     <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-mylan-purple">
+                         <h4 class="text-xl font-bold mb-2">Kinh doanh</h4>
+                         <p class="text-gray-600">Tăng trưởng GMV tổng **+25-30%** so với quý trước. Duy trì biên lợi nhuận gộp dương và xây dựng 10 SKU chủ lực.</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="plan" class="mb-20">
+             <h2 class="text-4xl font-bold text-center mb-4">Giải pháp & Kế hoạch Hành động 12 Tuần</h2>
+             <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Lộ trình chi tiết được chia thành 3 giai đoạn chính, tập trung vào việc xây dựng nền tảng vững chắc, chuẩn hóa hệ thống, và tối ưu hóa vận hành để chuẩn bị cho sự tăng trưởng bền vững.</p>
+
+            <div class="flex justify-center mb-8 bg-gray-200 rounded-full p-1 max-w-xl mx-auto text-center grid grid-cols-3">
+                <button data-phase="1" class="phase-tab active w-full py-2 px-4 rounded-full font-semibold text-sm md:text-base">Giai đoạn 1 (T10): Nền tảng & Khôi phục</button>
+                <button data-phase="2" class="phase-tab w-full py-2 px-4 rounded-full font-semibold text-sm md:text-base">Giai đoạn 2 (T11): Chuẩn hóa & Tải đơn</button>
+                <button data-phase="3" class="phase-tab w-full py-2 px-4 rounded-full font-semibold text-sm md:text-base">Giai đoạn 3 (T12): Vận hành & Tối ưu</button>
+            </div>
+            
+            <div id="plan-content" class="bg-white p-8 rounded-xl shadow-lg">
+            </div>
+        </section>
+        
+        <section id="team" class="mb-20">
+            <h2 class="text-4xl font-bold text-center mb-4">Cơ cấu Phòng E-commerce Mới</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Mô hình tổ chức được thiết kế lại theo nguyên tắc chuyên môn hóa, đảm bảo mỗi cá nhân chịu trách nhiệm một mảng việc rõ ràng, có KPI đo lường cụ thể, và tất cả dữ liệu được tập trung để dễ dàng theo dõi.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 text-center">
+                <!-- Đã thay đổi text-[#0D6EFD] thành text-mylan-purple -->
+                <div class="team-card bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all" data-role="manager">
+                    <h4 class="font-bold text-lg text-mylan-purple">E-commerce Manager</h4>
+                    <p class="text-sm text-gray-500">Quản lý tổng thể</p>
+                </div>
+                <div class="team-card bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all" data-role="commercial">
+                    <h4 class="font-bold text-lg text-mylan-purple">Commercial Executive</h4>
+                    <p class="text-sm text-gray-500">Sản phẩm & Khuyến mãi</p>
+                </div>
+                <div class="team-card bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all" data-role="marketing">
+                    <h4 class="font-bold text-lg text-mylan-purple">Performance Marketing</h4>
+                    <p class="text-sm text-gray-500">Quảng cáo & Tối ưu</p>
+                </div>
+                <div class="team-card bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all" data-role="creator">
+                    <h4 class="font-bold text-lg text-mylan-purple">Affiliate & Creator</h4>
+                    <p class="text-sm text-gray-500">KOC/KOL & Nội dung</p>
+                </div>
+                <div class="team-card bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all" data-role="operations">
+                    <h4 class="font-bold text-lg text-mylan-purple">Operations Executive</h4>
+                    <p class="text-sm text-gray-500">Vận hành & Kho</p>
+                </div>
+            </div>
+            <!-- Đã thay đổi bg-blue-50 thành bg-mylan-light và ring-blue-500 thành ring-mylan-purple trong JS -->
+            <div id="team-details" class="mt-8 bg-mylan-light p-6 rounded-lg min-h-[100px] flex items-center justify-center">
+                <p class="text-gray-500">Chọn một vị trí để xem nhiệm vụ chính.</p>
+            </div>
+        </section>
+
+        <section id="kpi" class="mb-20">
+            <h2 class="text-4xl font-bold text-center mb-4">KPI & Kết quả Kỳ vọng</h2>
+            <p class="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">Các chỉ số hiệu suất chính được thiết lập để đo lường sự thành công của kế hoạch tái cấu trúc, bao gồm cả việc xây dựng nền tảng vững chắc và đạt được các mục tiêu tăng trưởng kinh doanh.</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-bold text-center mb-4">Tăng trưởng GMV (QoQ)</h3>
+                    <div class="chart-container h-48 md:h-56">
+                        <canvas id="gmvGoalChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-bold text-center mb-4">Hiệu quả Quảng cáo (ROAS)</h3>
+                    <div class="chart-container h-48 md:h-56">
+                        <canvas id="roasGoalChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-bold text-center mb-4">Tỷ lệ Chuyển đổi (CVR)</h3>
+                    <div class="chart-container h-48 md:h-56">
+                        <canvas id="cvrGoalChart"></canvas>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-3">
+                    <h3 class="text-xl font-bold mb-4 text-center">Các Chỉ số Vận hành & Nền tảng</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <p class="font-bold text-2xl text-[#198754]">≥90%</p>
+                            <p class="text-sm text-gray-600">Phản hồi CSKH</p>
+                        </div>
+                         <div>
+                            <p class="font-bold text-2xl text-[#198754]">≥90%</p>
+                            <p class="text-sm text-gray-600">Giao hàng đúng hạn</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-2xl text-[#DC3545]">&lt;5%</p>
+                            <p class="text-sm text-gray-600">Tỷ lệ Hủy/Hoàn</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-2xl text-[#198754]">≥4.5/5</p>
+                            <p class="text-sm text-gray-600">Đánh giá Shop</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16">
+                 <h3 class="text-3xl font-bold mb-8 text-center">Rủi ro & Đề xuất Hỗ trợ</h3>
+                 <div class="grid md:grid-cols-2 gap-8">
+                     <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg">
+                         <h4 class="text-xl font-bold mb-3 text-red-800">Rủi ro Dự kiến</h4>
+                         <ul class="list-disc list-inside space-y-2 text-red-700">
+                             <li>Nhân sự mới cần thời gian hòa nhập & training.</li>
+                             <li>Thiếu công cụ phân tích dữ liệu chuyên sâu.</li>
+                             <li>Thay đổi quy trình có thể gây gián đoạn tạm thời.</li>
+                         </ul>
+                     </div>
+                      <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
+                         <h4 class="text-xl font-bold mb-3 text-green-800">Đề xuất Hỗ trợ từ BĐG</h4>
+                         <ul class="list-disc list-inside space-y-2 text-green-700">
+                             <li>Phê duyệt cơ cấu & ngân sách tuyển dụng trong T10.</li>
+                             <li>Phê duyệt kế hoạch chiến lược và KPIs.</li>
+                             <li>Hỗ trợ triển khai hệ thống Dashboard & công cụ tracking.</li>
+                             <li>Cho phép cố vấn tham gia điều phối trong 8 tuần đầu.</li>
+                         </ul>
+                     </div>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-6">
+        <p>&copy; 2025 MYLAN E-commerce Restructure Proposal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const gmvData = {
+            labels: ['Tháng 7', 'Tháng 8', 'Tháng 9'],
+            datasets: [{
+                label: 'GMV (Triệu VND)',
+                data: [117, 75, 26],
+                borderColor: '#DC3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        const gmvChartCtx = document.getElementById('gmvChart').getContext('2d');
+        new Chart(gmvChartCtx, {
+            type: 'line',
+            data: gmvData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + 'M';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        
+        // Data for detailed platform status
+        const shopeeDetailContent = `
+            <h4 class="text-xl font-bold mb-4 text-gray-800">Hiệu suất Tài khoản MYLAN PAPER (3 tháng gần nhất)</h4>
+            
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-3 gap-4 mb-6 text-center">
+                <div class="bg-red-50 p-4 rounded-lg border-b-2 border-red-500">
+                    <p class="text-3xl font-bold text-red-600">1.37%</p>
+                    <p class="text-sm text-gray-600">CVR Hiện tại</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border-b-2 border-red-500">
+                    <p class="text-3xl font-bold text-red-600">45.08%</p>
+                    <p class="text-sm text-gray-600">% Ads/Total GMV</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border-b-2 border-red-500">
+                    <p class="text-3xl font-bold text-red-600">4.02</p>
+                    <p class="text-sm text-gray-600">ROAS (Tháng 9)</p>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 text-mylan-purple">Vấn đề Nội dung & Khuyến mãi:</h4>
+            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                <li>Khuyến mãi **không đa dạng**, chỉ có một CTKM kéo dài suốt nhiều tháng.</li>
+                <li>**Không dùng** cổng khuyến mãi của sàn (Promotion submit).</li>
+                <li>**Visual không đồng bộ** trên toàn bộ gian hàng.</li>
+                <li>**Hiệu suất giảm liên tục** (GMV 117M → 26M) do không có chiến dịch.</li>
+            </ul>
+        `;
+
+        const tiktokDetailContent = `
+            <h4 class="text-xl font-bold mb-4 text-gray-800">Trạng thái Gian hàng TikTok Shop (Cấp bách)</h4>
+            
+            <!-- Status Overview -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-red-100 p-4 rounded-lg border-b-2 border-red-700">
+                    <p class="text-lg font-bold text-red-800">CÁC SHOP BỊ KHÓA/ĐÌNH CHỈ:</p>
+                    <ul class="list-disc list-inside text-sm mt-1 ml-4">
+                        <li>Mylan Mart, Tomie Hồ Chí Minh, Giấy Tomie, TOMIE HN, TOMIE HOCHIMINH.</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-100 p-4 rounded-lg border-b-2 border-yellow-700">
+                    <p class="text-lg font-bold text-yellow-800">SHOP HOẠT ĐỘNG YẾU:</p>
+                    <p class="text-3xl font-bold text-yellow-800">&lt;100K</p>
+                    <p class="text-sm text-gray-600">GMV (TOMIE HOME)</p>
+                </div>
+            </div>
+
+            <h4 class="font-bold text-lg mb-2 text-mylan-purple">Vấn đề Vận hành/Nội dung cốt lõi:</h4>
+            <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                <li>**Lỗi Vận hành nghiêm trọng** dẫn đến khóa shop (thiếu CSKH, không xử lý đơn).</li>
+                <li>**Visual không đồng bộ:** Thumbnail không chuẩn, thiếu thiết kế Homepage.</li>
+                <li>**Listing chưa thống nhất:** Tên SKU dài, chứa cả tên đối thủ.</li>
+                <li>**Thiếu Operation chuyên trách:** Gần như không có hoạt động.</li>
+            </ul>
+        `;
+
+        // New tab logic implementation
+        const tabShopee = document.getElementById('tab-shopee');
+        const tabTiktok = document.getElementById('tab-tiktok');
+        const contentShopee = document.getElementById('content-shopee');
+        const contentTiktok = document.getElementById('content-tiktok');
+
+        contentShopee.innerHTML = shopeeDetailContent;
+        contentTiktok.innerHTML = tiktokDetailContent;
+
+        function activateTab(activeTab, activeContent, inactiveTab, inactiveContent) {
+            activeTab.classList.add('active', 'text-mylan-purple', 'border-mylan-purple');
+            activeTab.classList.remove('text-gray-500', 'border-transparent', 'hover:border-gray-300');
+            
+            inactiveTab.classList.remove('active', 'text-mylan-purple', 'border-mylan-purple');
+            inactiveTab.classList.add('text-gray-500', 'border-transparent', 'hover:border-gray-300');
+
+            activeContent.classList.remove('hidden');
+            inactiveContent.classList.add('hidden');
+        }
+
+        // Kích hoạt tab TikTok ban đầu
+        activateTab(tabTiktok, contentTiktok, tabShopee, contentShopee);
+
+        tabShopee.addEventListener('click', () => {
+            activateTab(tabShopee, contentShopee, tabTiktok, contentTiktok);
+        });
+
+        tabTiktok.addEventListener('click', () => {
+            activateTab(tabTiktok, contentTiktok, tabShopee, contentShopee);
+        });
+
+        const planData = {
+            1: {
+                title: 'Giai đoạn 1 (Tuần 1-4, Tháng 10): Tái cấu trúc & Thiết lập Nền tảng',
+                activities: [
+                    'Rà soát năng lực nhân sự, mô tả công việc, workflow hiện tại.',
+                    'Thiết kế sơ đồ tổ chức mới và KPI framework cho từng vị trí.',
+                    'Xây dựng quy trình SOP chuẩn cho Shopee & TikTok Shop.',
+                    'Chuẩn bị tài liệu onboarding & đào tạo nội bộ.',
+                    '<b>Ưu tiên Cấp bách:</b> Hoàn tất nhân sự Operation & Tối ưu/Khôi phục 90% Gian hàng TikTok Shop.' // Thêm mốc T10
+                ],
+                deliverables: 'Cơ cấu phòng E-commerce hoàn chỉnh, Bộ JD + KPI Framework, SOP chuẩn hóa, Gian hàng TikTok Shop đã được xử lý lỗi.'
+            },
+            2: {
+                title: 'Giai đoạn 2 (Tuần 5-8, Tháng 11): Chuẩn hóa & Triển khai Hệ thống',
+                activities: [
+                    'Listing lại toàn bộ SKU trên Shopee & TikTok Shop.',
+                    'Chuẩn hóa content, hình ảnh, homepage và danh mục.',
+                    'Thiết lập Dashboard KPI (GMV, ROAS, CVR, Cancel Rate, SLA).',
+                    'Xác định 15–20 SKU chiến lược (chiếm 80% GMV).',
+                    '<b>Mốc Quan trọng:</b> Bắt đầu bán hàng (Affiliate, QC) & Thực hiện Scale-up Thử nghiệm để kiểm tra Tải đơn/Khả năng Fulfillment.' // Thêm mốc T11
+                ],
+                deliverables: 'Dashboard hoạt động real-time, Bộ visual SKU chuẩn, Báo cáo KPI định kỳ hằng tuần, Khả năng tải đơn được xác nhận.'
+            },
+            3: {
+                title: 'Giai đoạn 3 (Tuần 9-12, Tháng 12): Vận hành Chính thức & Tối ưu',
+                activities: [
+                    'Vận hành đầy đủ theo cấu trúc mới.',
+                    'Đào tạo team về quy trình và KPI.',
+                    'Tối ưu chi phí ads, margin, quy trình CS & fulfillment.',
+                    'Chuẩn bị kế hoạch scale-up cho Q1/2026.'
+                ],
+                deliverables: 'Báo cáo tổng kết Before/After, Kế hoạch tăng trưởng cho Q1/2026.'
+            }
+        };
+
+        const planContent = document.getElementById('plan-content');
+        const phaseTabs = document.querySelectorAll('.phase-tab');
+
+        function updatePlanContent(phase) {
+            const data = planData[phase];
+            planContent.innerHTML = `
+                <h3 class="text-2xl font-bold mb-4 text-mylan-purple">${data.title}</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-lg mb-2">Hoạt động chính:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            ${data.activities.map(act => `<li>${act}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                         <h4 class="font-semibold text-lg mb-2">Kết quả cần đạt:</h4>
+                         <p class="text-gray-800">${data.deliverables}</p>
+                    </div>
+                </div>
+            `;
+            phaseTabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.phase === phase);
+            });
+        }
+
+        phaseTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                updatePlanContent(tab.dataset.phase);
+            });
+        });
+        updatePlanContent('1');
+        
+        const teamData = {
+            manager: 'Quản lý tổng thể hoạt động E-com; chịu trách nhiệm P&L, KPI và chiến lược tăng trưởng.',
+            commercial: 'Quản lý danh mục sản phẩm, giá bán, chương trình khuyến mãi (CTKM), làm việc với các sàn.',
+            marketing: 'Quản lý quảng cáo nội/ngoại sàn, tối ưu chi phí, ROAS, CAC.',
+            creator: 'Phát triển hệ thống KOC/KOL/Affiliate, quản lý nội dung sản phẩm.',
+            operations: 'Quản lý quy trình đơn hàng, kho, tồn, CS, SLA, tỷ lệ huỷ & hoàn.'
+        };
+        const teamDetails = document.getElementById('team-details');
+        const teamCards = document.querySelectorAll('.team-card');
+        
+        teamCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const role = card.dataset.role;
+                teamDetails.innerHTML = `<p class="font-medium text-lg text-gray-800">${teamData[role]}</p>`;
+                teamCards.forEach(c => c.classList.remove('ring-2', 'ring-mylan-purple'));
+                card.classList.add('ring-2', 'ring-mylan-purple');
+            });
+        });
+        
+        const createGoalChart = (ctx, label, data, target, unit, color) => {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [label],
+                    datasets: [{
+                        label: `Mục tiêu (${unit})`,
+                        data: [data],
+                        backgroundColor: color,
+                        borderColor: color,
+                        borderWidth: 1,
+                        barThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: target * 1.2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: `Mục tiêu: ${target}${unit}`,
+                            font: { size: 14 },
+                            color: '#333'
+                        }
+                    }
+                }
+            });
+        };
+
+        const gmvGoalCtx = document.getElementById('gmvGoalChart').getContext('2d');
+        createGoalChart(gmvGoalCtx, 'GMV', 25, 30, '%', '#198754');
+
+        const roasGoalCtx = document.getElementById('roasGoalChart').getContext('2d');
+        createGoalChart(roasGoalCtx, 'ROAS', 8, 8, '', '#198754');
+
+        const cvrGoalCtx = document.getElementById('cvrGoalChart').getContext('2d');
+        createGoalChart(cvrGoalCtx, 'CVR', 4, 4, '%', '#198754');
+        
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if(pageYOffset >= sectionTop - 100){
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href').includes(current)){
+                    link.classList.add('active');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
